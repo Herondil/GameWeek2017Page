@@ -1,0 +1,21 @@
+#gameSlider{
+	display : block;
+	margin 	: auto;
+	width	: 700px;
+}
+
+
+/*La flèche droite du slider*/
+#RightArrow{
+	float : right;
+}
+
+/*La classe des éléments du slider*/
+.game img{
+	display : block;
+	margin 	: auto;
+}
+
+.game p{
+	text-align:center;
+}

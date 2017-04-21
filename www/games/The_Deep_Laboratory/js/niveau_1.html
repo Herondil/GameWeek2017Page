@@ -1,0 +1,261 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+    <title>Phaser - Making your first game, part 9</title>
+	<script type="text/javascript" src="js/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(1900, 400, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
+
+function preload() {
+
+    // PRELOAD LES ASSETS
+    game.load.image('background', 'assets/image.png');
+    game.load.image('ground', 'assets/platform.png');
+    game.load.image('star', 'assets/star.png');
+    game.load.image('key', 'assets/key.png');
+    game.load.image('vent', 'assets/vent.png');
+    game.load.image('baril', 'assets/baril.png');
+    game.load.image('vent2', 'assets/vent2.png');
+    game.load.image('porte', 'assets/door.png');
+    game.load.image('vestiaire', 'assets/vestiaire.png');
+    game.load.image('pied', 'assets/pied.png');
+    game.load.image('vestiaireOuvert', 'assets/vestiaireDeux.png');
+    game.load.image('doorDeux', 'assets/doorDeux.png');    
+    game.load.spritesheet('dude', 'assets/joueur.png', 80,132);
+    game.load.spritesheet('robinet', 'assets/robinet.png', 76,142);
+    game.load.audio('song', ['assets/song.mp3', 'assets/song.ogg']);
+   
+}
+    // LES VARIABLES
+    var vestiaire
+    var player;
+    var platforms;
+    var trigger;
+    var cursors;
+    var texte;
+    var ground;
+    var porte;
+    var passage = 0;
+    var mur;
+    var mummy;
+    var layer;
+
+function create() {
+
+    music = new Phaser.Sound(game,'song',1,true);
+    music = game.sound.play('song');
+
+    //  REQUIS
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    // LE BACKGROUND
+   tilesprite = game.add.tileSprite(0, 0, 2700, 400, 'background'); 
+
+    //  REQUIS PLATEFORMES
+    platforms = game.add.group();
+    vestiaire = game.add.group();
+    vestiaire.enableBody = true;
+
+    //  REQUIS PHYSIQUE PLATEFORMES
+    platforms.enableBody = true;
+
+    // CREATION DU SOL
+    var ledge = platforms.create(400, 400, 'ground');
+    ledge.body.immovable = true;
+    var ground = platforms.create(0, game.world.height - 50, 'ground');
+    ground.alpha = 0.0;
+
+    //  AGRANDISSEMENT DU SOL
+    ground.scale.setTo(3, 3);
+
+    //  SOL IMMOBIME
+    ground.body.immovable = true;
+
+    //  ELEMENTS PHYSIQUE IMMOVABLE
+    ledge = platforms.create(310, 250, 'baril');
+    ledge.body.immovable = true;
+
+    ledge = platforms.create(335, 90, 'ground');
+    ledge.scale.setTo(0.7, 0.3);
+    ledge.body.immovable = true;
+
+    mur = platforms.create(615, 90, 'ground');
+    mur.scale.setTo(0.2, 0.3);
+    mur.body.immovable = true;
+
+    ledge = platforms.create(335, 40, 'ground');
+    ledge.scale.setTo(0.9, 0.3);
+    ledge.body.immovable = true;
+
+    ledge = platforms.create(335, 48, 'ground');
+    ledge.scale.setTo(0.01, 1.3);
+    ledge.body.immovable = true;
+   
+    ledge = platforms.create(700, 50, 'ground');
+    ledge.scale.setTo(0.01, 1.3);
+    ledge.body.immovable = true;
+
+    /************************************************************************************************************************************LES IMAGES************************************************************************************************************************************/
+  
+    var vent = game.add.sprite(612, 44, 'vent');
+
+    var vent2 = game.add.sprite(520, 43, 'vent2');
+                game.add.sprite(430, 43, 'vent2');
+                game.add.sprite(340, 43, 'vent2');
+ 
+    mummy = game.add.sprite(200, 220, 'robinet');
+
+    var vestiaireOuvert = game.add.sprite(500,200,'vestiaireOuvert');
+
+    /************************************************************************************************************************************LA PORTE****************************************************************************************************************************************/
+
+    // INITIALISATION PORTE
+    porte = game.add.group();
+    porte.enableBody = true;
+       
+    // IMAGE PORTE
+     var unePorte =  porte.create(900,200,'porte');
+
+     /************************************************************************************************************************************LES OBJETS****************************************************************************************************************************************/
+
+    // INITIALISATION OBJETS
+    objets = game.add.group();
+    objets.enableBody = true;
+       
+  
+     
+    /*************************************************************************************************************************************LE VESTIAIRE*****************************************************************************************************************************************/
+
+     // INITIALISATION VESTIAIRE
+    vestiaire = game.add.group();
+    vestiaire.enableBody = true;
+
+    // IMAGE VESTIAIRE
+     var unVestiaire=  vestiaire.create(500,200,'vestiaire');
+  
+    // POSTITIONNEMENT INITIAL DU JOUEUR
+    player = game.add.sprite(0, game.world.height - 700, 'dude');
+   
+    //  PHYSIQUE DU JOUEUR
+    game.physics.arcade.enable(player);
+
+    //  PHYSIQUE DE SAUT DU JOUEUR
+    player.body.bounce.y = 0.1;
+    player.body.gravity.y = 300;
+    player.body.collideWorldBounds = true;
+
+    //  ANIMATIONS MARCHER A DROITE ET A GAUCHE
+    player.animations.add('left', [0, 1, 2, 3], 10, true);
+    player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+    // CREATION DES INPUTS DE CLAVIER
+    cursors = game.input.keyboard.createCursorKeys();
+    rKey    = game.input.keyboard.addKey(Phaser.Keyboard.R);
+    eKey    = game.input.keyboard.addKey(Phaser.Keyboard.E);
+    dKey    =game.input.keyboard.addKey(Phaser.Keyboard.D); 
+    wKey    =game.input.keyboard.addKey(Phaser.Keyboard.W);  
+
+    // ANIMATION DU ROBINET
+    mummy.animations.add('goutte', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], 9, true);
+}
+    game.camera.follow(player);
+
+function update() {
+
+    // ANIMATION DU ROBINET
+    mummy.animations.play('goutte');
+
+    //  COLLISION DU JOUEUR AVEC PLATFORMS
+    game.physics.arcade.collide(player, platforms);
+  
+    // COLLISION DU JOUEUR AVEC CLEFS
+    game.physics.arcade.overlap(player, vestiaire, function(player, vest) {
+    
+        // SI TOUCHE E ACTIVE
+       
+        if (wKey.isDown === true) {
+
+            vest.kill();
+            objets.create(500,300,'pied'); 
+            objets.create(400,50,'key');                     
+            }                
+    });
+
+      game.physics.arcade.overlap(player, objets, function(player, obj) {
+               
+            if (rKey.isDown === true) {
+             passage++;  
+             passage++; 
+            obj.kill();       
+            }        
+    });
+
+       game.physics.arcade.overlap(player, porte, function(player, port) {
+               
+            if (wKey.isDown === true && passage > 3) {
+                port.kill();
+                porte.create(900,190,'doorDeux');
+            }        
+    });
+ 
+   if (passage > 1) {
+     
+    mur.kill();
+
+   }
+    
+    //  MOUVEMENT DE BASE DU JOUEUR
+    player.body.velocity.x = 0;
+
+    if (cursors.left.isDown){
+        //  ALLER A GAUCHE
+        player.body.velocity.x = -150;
+
+        player.animations.play('left');
+    }
+
+    else if (cursors.right.isDown){
+
+        //  ALLER A DROITE
+        player.body.velocity.x = 150;
+
+        player.animations.play('right');
+    }
+
+    else if (cursors.down.isDown) {
+        player.scale.setTo(0.2,0.2)
+    }
+
+    else{
+
+        //  NE PAS BOUGER
+        player.animations.stop();
+
+        player.frame = 4;
+    }
+    
+    //  AUTAURISATION DU SAUT = TOUCHE SAUT + ETRE SUR LE SOL
+    if (cursors.up.isDown && player.body.touching.down){
+
+        player.body.velocity.y = -550;
+    }  
+}
+
+function render() {   
+
+
+}
+</script>
+
+</body>
+</html>

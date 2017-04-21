@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Game Week 2017 Games</title>
+		<script src="https://www.w3schools.com/lib/w3.js"></script>
+		<link rel="stylesheet" type="text/css" href="theme.css">
+	</head>
+	
+	<body>	
+		<div id = "gameSlider">
+		
+			<!-- Alliance -->
+			<figure class="game">
+			  <img src="images/alliance.png" alt="Affiche jeu vidéo Alliance" width="593" height="686">
+			  <figcaption>
+				<p>Alliance est un jeu coopératif à deux joueurs !</p>
+				<p><a href="games/Alliance">Jouer !</a> <a href="https://github.com/ZerenCHEN/Alliance">Code source</a></p>
+			  </figcaption>
+			</figure>
+			
+			<!-- Shikong -->
+			<figure class="game">
+			  <img src="images/shikong.jpg" alt="Affiche jeu vidéo Shikong" width="593" height="686">
+			   <figcaption>
+				<p>Shikong mélange jeu de labyrinthe et jeu de course !</p>
+				<p><a href="games/Shikong">Jouer !</a> <a href="https://github.com/ThibautMln/shikong">Code source</a></p>
+			  </figcaption>
+			</figure>
+			
+			<!-- The Deep Laboratory -->
+			<figure class="game">
+			  <img src="images/laboratory.jpg" alt="Affiche jeu vidéo The Deep Laboratory" width="593" height="686">
+			   <figcaption>
+				<p>The Deep Laboratory est un jeu dans le quel vous explorez un étrange laboratoire à la recherche de votre passé !</p>
+				<p><a href="games/The_Deep_Laboratory">Jouer !</a> <a href="https://framadrop.org/r/EFSqqX_mzC#Pf6OC27NS22yrZKoWQh0oqfNWdP9MoZVTjTkGnvCbRE=">Code source</a></p>
+			  </figcaption>
+			</figure>
+			
+			<!-- Humanity's Evasion -->
+			<figure class="game">
+			  <img src="images/humanity.jpg" alt="Affiche jeu vidéo Humanity's Evasion" width="593" height="686">
+			   <figcaption>
+				<p>Humanity's Evasion vous propose de gérer la terre pour empêcher sa destruction !</p>
+				<p><a href="games/Humanity_s_Evasion">Jouer !</a> <a href="https://github.com/NicolasCELLA/Humanity-s-Evasion-v1.0">Code source</a></p>
+			  </figcaption>
+			</figure>
+			
+			<!-- Igra -->
+			<figure class="game">
+			  <img src="images/igra.jpg" alt="Affiche jeu vidéo Igra" width="593" height="686">
+			   <figcaption>
+				<p>Igra est un jeu d'exploration et d'énigmes dans lequel le joueur peut changer de saison à volonté !</p>
+				<p><a href="games/Igra">Jouer !</a> <a href="https://framadrop.org/r/_vsY5imSHF#DoyZJ2O9MR4lTLZ/prCCFYEd6qMPEFOCGVVMSUepphA=">Code source</a></p>
+			  </figcaption>
+			</figure>
+			
+			<!-- Gold Digger -->
+			<figure class="game">
+			  <img src="images/digger.jpg" alt="Affiche jeu vidéo Gold Digger" width="593" height="686">
+			   <figcaption>
+				<p>Gold Digger est un jeu d'infiltration dans lequel il faut trouver comment séduire une personne riche !</p>
+				<p><a href="games/Gold_Digger">Jouer !</a> <a href="https://github.com/FireVulcain/GoldDigger">Code source</a></p>
+			  </figcaption>
+			</figure>
+			
+			<!-- Mindblow -->
+			<figure class="game">
+			  <img src="images/mindblow.png" alt="Affiche jeu vidéo Mindblow" width="593" height="686">
+			   <figcaption>
+				<p>Mindblow vous met aux commandes d'un morceau de cerveau détaché qui doit retourner à sa place !</p>
+				<p><a href="games/Mindblow">Jouer !</a> <a href="https://github.com/FuryLucky/MindBlow">Code source</a></p>
+			  </figcaption>
+			</figure>
+			
+			
+			<button id="LeftArrow" onclick="gamesShow.previous()"><</button>
+			<button id="RightArrow" onclick="gamesShow.next()">></button>
+		</div>
+
+		<script>
+			gamesShow = w3.slideshow(".game", 0);
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,16 @@
+body {
+	background: url("../imgs/page_dacceuil.png");
+}
+
+h1 {
+	font-family: 'poor richard', cursive;
+	font-size: 100px;
+	margin-top: 15px;
+	color: black;
+}
+
+img {
+	width: 55%;
+	margin-left: 45px;
+	margin-top: 118px;
+}

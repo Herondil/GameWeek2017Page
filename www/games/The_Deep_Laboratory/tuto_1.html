@@ -1,0 +1,265 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Phaser - Making your first game, part 9</title>
+    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+    <style type="text/css">
+        body {margin: 0;
+            padding-top: 100px;
+            background-color: black;
+           
+        }
+
+        #game-area > canvas {
+            margin: 0 auto;
+        }
+
+        #message {
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            font-size: 32px;
+            font-family: "Gloria Hallelujah";
+            text-align: center;
+        }
+
+        #message::before {
+            content: "« ";
+        }
+
+        #message::after {
+            content: " »";
+        }
+
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(1000, 400, Phaser.AUTO, 'game-area', { preload: preload, create: create, update: update/*, render: render */});
+
+function preload() {
+
+    // PRELOAD LES ASSETS
+    game.load.image('background', 'assets/image.png');
+    game.load.image('ground', 'assets/platform.png');
+    game.load.image('key', 'assets/key.png');
+    game.load.image('vent', 'assets/vent.png');
+    game.load.image('baril', 'assets/baril.png');
+    game.load.image('vent2', 'assets/vent2.png');
+    game.load.image('porte', 'assets/door.png');
+    game.load.image('vestiaire', 'assets/vestiaire.png');
+    game.load.image('pied', 'assets/pied.png');
+    game.load.image('vestiaireOuvert', 'assets/vestiaireDeux.png');
+    game.load.image('doorDeux', 'assets/doorDeux.png');
+    game.load.image('r', 'assets/r.png');   
+    game.load.image('bas', 'assets/bas.png'); 
+    game.load.image('msg', 'assets/msg.png')
+    game.load.image('etage', 'assets/etage.png')    
+    game.load.spritesheet('dude', 'assets/perso.png', 96,136);
+    game.load.spritesheet('robinet', 'assets/robinet.png', 76,142);
+    game.load.audio('test', ['assets/song_2.mp3', 'assets/song_2.ogg']);   
+    game.load.audio('pickup', ['assets/pickup.mp3', 'assets/pickup.ogg']);
+    game.load.audio('porte', ['assets/porte.mp3', 'assets/porte.ogg']);
+    game.load.audio('ferme', ['assets/ferme.mp3', 'assets/ferme.ogg']);
+   
+}
+    // LES VARIABLES
+    var vestiaire
+    var player;
+    var platforms;
+    var trigger;
+    var cursors;
+    var texte;
+    var ground;
+    var porte;
+    var passage = 0;
+    var mur;
+    var mummy;
+
+function create() {
+
+    music = new Phaser.Sound(game,'test',1,true);
+    music = game.sound.play('test');
+
+    //  REQUIS
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    // LE BACKGROUND
+   tilesprite = game.add.tileSprite(0, 0, 1000, 400, 'background'); 
+
+    //  REQUIS PLATEFORMES
+    platforms = game.add.group();
+    vestiaire = game.add.group();
+    vestiaire.enableBody = true;
+
+    //  REQUIS PHYSIQUE PLATEFORMES
+    platforms.enableBody = true;
+
+    // CREATION DU SOL
+    var ledge = platforms.create(400, 400, 'ground');
+    ledge.body.immovable = true;
+    var ground = platforms.create(0, game.world.height - 50, 'ground');
+    ground.alpha = 0.0;
+
+    //  AGRANDISSEMENT DU SOL
+    ground.scale.setTo(3, 3);
+
+    //  SOL IMMOBIME
+    ground.body.immovable = true;
+     
+    // CREATION DES INPUTS DE CLAVIER
+    cursors = game.input.keyboard.createCursorKeys();
+    rKey    = game.input.keyboard.addKey(Phaser.Keyboard.R);
+    eKey    = game.input.keyboard.addKey(Phaser.Keyboard.E);
+    dKey    =game.input.keyboard.addKey(Phaser.Keyboard.D); 
+    wKey    =game.input.keyboard.addKey(Phaser.Keyboard.W);  
+
+    /*************************************************************************************************************************************LES IMAGES PHYSIQUES*****************************************************************************************************************************************/
+
+    ledge = platforms.create(310, 170, 'vestiaire');
+    ledge.body.immovable = true;
+    ledge = platforms.create(250,0, 'vent')
+    ledge.body.immovable = true;
+    ledge = platforms.create(338,0, 'vent')
+    ledge.body.immovable = true;
+    ledge = platforms.create(426,0, 'vent')
+    ledge.body.immovable = true;
+    ledge = platforms.create(310,90, 'baril')
+    ledge.body.immovable = true; 
+
+    /************************************************************************************************************************************LES IMAGES NON PHYSIQUE************************************************************************************************************************************/
+  
+    // TOUCHE BAS
+    bas = game.add.group();
+    bas.enableBody = false;
+    bas.create(200,320,'bas'); 
+
+    // TOUCHE R
+    r= game.add.group();
+    r.enableBody = false;
+    r.create(890,120,'r');
+    
+    //ETAGE
+    game.add.sprite(600,200,'etage')   
+
+    /************************************************************************************************************************************LES INTERACTIONS************************************************************************************************************************************/
+
+    // PORTE
+    porte = game.add.group();
+    porte.enableBody = true;
+       
+    var unePorte =  porte.create(900,200,'porte');
+
+    // POSTITIONNEMENT INITIAL DU JOUEUR
+    player = game.add.sprite(0, 215, 'dude');
+   
+    //  PHYSIQUE DU JOUEUR
+    game.physics.arcade.enable(player);
+
+    //  PHYSIQUE DE SAUT DU JOUEUR
+    player.body.bounce.y = 0.1;
+    player.body.gravity.y = 300;
+    player.body.collideWorldBounds = true;
+
+    //  ANIMATIONS MARCHER A DROITE ET A GAUCHE
+    player.animations.add('right', [0, 1, 2, 3, 4, 5], 5, true);
+    player.animations.add('left', [6, 7, 8, 9, 10, 11], 5, true);
+  
+}
+
+function update() {
+ 
+    // PLAYER-PORTE
+    game.physics.arcade.overlap(player, porte, function(player, port) {
+               message("la touche 'r' permet d'intégargir avec les objets")
+            if (rKey.isDown === true) {
+                    port.kill();
+                    porte.create(900,190,'doorDeux');
+
+                    // Go vers Tuto 2
+
+                    location.href = 'tuto_2.html';
+            }        
+    });
+       
+     //  COLLISION DU JOUEUR AVEC PLATFORMS
+    game.physics.arcade.collide(player, platforms);
+
+    //  MOUVEMENT DE BASE DU JOUEUR
+    player.body.velocity.x = 0;
+
+    if (cursors.left.isDown){
+        //  ALLER A GAUCHE
+        player.body.velocity.x = -150;
+
+        player.animations.play('left');
+    }
+
+    else if (cursors.right.isDown){
+
+        //  ALLER A DROITE
+        player.body.velocity.x = 150;
+
+        player.animations.play('right');
+    }
+
+    else if (cursors.down.isDown) {
+        player.scale.setTo(0.2,0.2)
+        message("maintenant tu peut passer")
+          music = game.sound.play('cris');
+        
+    }
+
+    else{
+
+        //  NE PAS BOUGER
+        player.animations.stop();
+
+        player.frame = 0;
+    }
+    
+    //  AUTAURISATION DU SAUT = TOUCHE SAUT + ETRE SUR LE SOL
+    if (cursors.up.isDown && player.body.touching.down){
+
+        player.body.velocity.y = -550;
+    }  
+}
+
+function render() {   
+  
+      porte.forEach(function(item) {
+        game.debug.body(item);
+
+    });
+
+    game.debug.body(player);
+}
+
+function message(text) {
+    var timer = 0;
+
+    return (function() {
+
+        clearTimeout(timer);
+
+        var div = document.getElementById('message');
+        div.style.visibility = 'visible';
+
+        div.textContent = text;
+
+        timer = setTimeout(function() {
+            div.style.visibility = 'hidden';
+        }, 2000);
+        
+    })();
+}
+</script>
+
+    <div id="game-area"></div>
+    <div id="message">Appui sur bas</div>
+
+</body>
+</html>

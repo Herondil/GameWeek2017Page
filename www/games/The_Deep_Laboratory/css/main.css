@@ -1,0 +1,184 @@
+html,body{
+	width:100%;
+	height:100%;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	position: absolute;
+	background-color: black;
+}
+
+.tv{
+	width: 99%;
+    position: relative;
+	margin-top: 10%;
+    z-index: 1;
+}
+
+h1{
+    font-size: 70px;
+    z-index: 2;
+    position: absolute;
+    top: 1%;
+    color: white;
+    text-align: center;
+    width: 100%;
+    font-family: "Gloria Hallelujah";
+    animation-name: effect-float, effect;
+    animation-duration: .5s, 1.5s;
+    animation-timing-function: ease-out, ease-in-out;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards;
+    animation-direction: normal, alternate;
+}
+
+a{
+	color: white;
+	font-family: Arial;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: "Gloria Hallelujah";
+  background: #394c59;
+  background-image: -webkit-linear-gradient(top, #394c59, #a82a2a);
+  background-image: -moz-linear-gradient(top, #394c59, #a82a2a);
+  background-image: -ms-linear-gradient(top, #394c59, #a82a2a);
+  background-image: -o-linear-gradient(top, #394c59, #a82a2a);
+  background-image: linear-gradient(to bottom, #394c59, #a82a2a);
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  padding: 12px 20px 12px 20px;
+  cursor: pointer;
+}
+
+.a1{
+	font-size: 30px;
+  position: absolute;
+  padding: 0 52px;
+  z-index: 2;
+  top: 30%; 
+  right: 52%;
+  animation-name: effect_suspension_top-float, effect_suspension_top;
+    animation-duration: 4s, 3s;
+    animation-timing-function: ease-out, ease-in-out;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards;
+    animation-direction: normal, alternate;
+}
+
+.a2{
+	font-size: 30px;
+  padding: 1px 90px;
+  position: absolute;
+  z-index: 2;
+  top: 30%;
+  left: 52%;
+  animation-name: effect_top-float, effect_top;
+    animation-duration: 4s, 3s;
+    animation-timing-function: ease-out, ease-in-out;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards;
+    animation-direction: normal, alternate;
+}
+
+a:hover {
+  background: #db1818;
+  background-image: -webkit-linear-gradient(top, #db1818, #a13232);
+  background-image: -moz-linear-gradient(top, #db1818, #a13232);
+  background-image: -ms-linear-gradient(top, #db1818, #a13232);
+  background-image: -o-linear-gradient(top, #db1818, #a13232);
+  background-image: linear-gradient(to bottom, #db1818, #a13232);
+  text-decoration: none;
+}
+
+.joueur{
+	position: absolute;
+	left: 15%;
+	bottom: 0%;
+	z-index: 2;
+	width: 15%;
+  animation-name: effect_suspension_left-float, effect_suspension_left;
+    animation-duration: .3s, 1.5s;
+    animation-timing-function: ease-out, ease-in-out;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards;
+    animation-direction: normal, alternate;
+}
+
+.joueur:hover{
+	-webkit-transform: scale(1.3);
+	-moz-transform: scale(1.3);
+	transform: scale(1.3);
+	transition-property: all;
+	transition-duration: .3s;
+	transition-timing-function: ease;  
+}
+
+    @keyframes effect_suspension_left {
+      0% {
+        transform: translateX(-12px);
+      }
+      50% {
+        transform: translateX(-px);
+      }
+      100% {
+        transform: translateX(-12px);
+      }
+    }
+    @keyframes effect_suspension_left {
+      100% {
+        transform: translateX(-12px);
+      }
+    }
+
+       @keyframes effect_suspension_top {
+      0% {
+        transform: translateX(-30px);
+      }
+      50% {
+        transform: translateX(-px);
+      }
+      100% {
+        transform: translateX(-30px);
+      }
+    }
+    @keyframes effect_suspension_top {
+      100% {
+        transform: translateX(-30px);
+      }
+    }
+
+      @keyframes effect_top {
+      0% {
+        transform: translateX(30px);
+      }
+      50% {
+        transform: translateX(-px);
+      }
+      100% {
+        transform: translateX(30px);
+      }
+    }
+    @keyframes effect_top {
+      100% {
+        transform: translateX(30px);
+      }
+    }
+    
+    @keyframes effect {
+      0% {
+        transform: translateY(18px);
+      }
+      50% {
+        transform: translateY(-px);
+      }
+      100% {
+        transform: translateY(18px);
+      }
+    }
+    @keyframes effect {
+      100% {
+        transform: translateY(18px);
+      }
+    }

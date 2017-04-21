@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Igra - Jeu</title>
+		<style>
+			body {
+				background: url("imgs/tuto_1.jpg");
+				background-position: top center;
+				background-size: 100%;
+				background-repeat: no-repeat;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="t1"></div>
+
+		<script>			
+			var intervalID = window.setInterval(myCallback, 3000);
+			var tuto = 1;
+
+			function myCallback() {
+			  tuto++;
+			  if(tuto === 2){
+			  	document.body.style.background = "url('imgs/tuto_2.jpg')";
+			  	document.body.style.backgroundPosition = "top";
+			  	document.body.style.backgroundSize = "100%";
+			  	document.body.style.backgroundRepeat = "no-repeat";
+			  } else if(tuto === 3){
+			  	document.body.style.background = "url('imgs/tuto_3.jpg')";
+			  	document.body.style.backgroundPosition = "top";
+			  	document.body.style.backgroundSize = "100%";
+			  	document.body.style.backgroundRepeat = "no-repeat";
+			  } else if(tuto === 4){
+			  	document.body.style.background = "url('imgs/tuto_4.jpg')";
+			  	document.body.style.backgroundPosition = "top";
+			  	document.body.style.backgroundSize = "100%";
+			  	document.body.style.backgroundRepeat = "no-repeat";
+			  } else if(tuto === 5){
+			  	document.location.href = "intro.html";
+			  }
+			}
+		</script>
+	</body>
+</html>

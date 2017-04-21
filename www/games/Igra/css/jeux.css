@@ -1,0 +1,20 @@
+body { margin: 0; }
+
+canvas { display: block; margin: 0;}
+
+#message {
+			position: fixed;
+			bottom:1em;
+			left:1em;
+			right:1em;
+			z-index: 9;
+			margin-bottom : 10px;
+			padding:30px 10px;
+			background-color: rgba(0, 0, 0, 0.8);
+			color : white;
+			text-align: center;
+			font-family: 'Arial', fantasy;
+			transform: scale(2);
+			transition: transform 0.25s;
+			display:none;
+		}
